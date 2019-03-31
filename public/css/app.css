@@ -1,0 +1,35 @@
+.sidebar
+{
+    background: white;
+    border-right: 1px solid #ccc;
+    padding: 20px !important;
+    box-shadow: 0 0 30px rgba(0,0,0,0.1);
+}
+.content
+{
+    flex: 1;
+}
+#app
+{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.row
+{
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.col 
+{
+    margin: 0 !important;
+    padding: 0 !important;
+}
+nav 
+{
+    z-index: 100;
+}
+article
+{
+    margin: 20px;
+}

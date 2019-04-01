@@ -8,25 +8,73 @@ class ArticlesController extends Controller
 {
     public function index()
     {
-        $articles = \App\Article::all();
-
-        return view('articles/index', [
-            'articles' => $articles
-        ]);
+        return view('articles/index');
     }
 
     public function article($id)
     {
         return view('articles/article', [
-            'article' => \App\Article::find($id),
-            'articles' => \App\Article::all()
+            'current' => $id,
+            'article' => \App\Article::findOrFail($id)
         ]);
+    }
+
+    public function update($id, Request $req)
+    {
+        $req->validate([
+            'title' => 'required|min:5',
+            'content' => 'required|min:5',
+            'values' => 'numeric|min:1|max:50',
+            'formula' => 'required'
+        ]);
+        
+        $article = \App\Article::findOrFail($id);
+
+        $article->title = request('title');
+        $article->content = request('content');
+        $article->values = request('values');
+        $article->formula = request('formula');
+
+        $article->save();
+
+        return redirect('/articles/'.$id);
+    }
+
+    public function delete($id)
+    {
+        $article = \App\Article::findOrFail($id);
+        $article->delete();
+        return redirect('/');
+    }
+
+    public function edit($id)
+    {
+        return view('articles/edit', [
+            'article' => \App\Article::findOrFail($id)
+        ]);        
+    }
+
+    public function store(Request $req)
+    {
+        $req->validate([
+            'title' => 'required|min:5',
+            'content' => 'required|min:5',
+            'values' => 'numeric|min:1|max:50',
+            'formula' => 'required'
+        ]);
+
+        $article = \App\Article::create([
+            'title' => request('title'),
+            'content' => request('content'),
+            'values' => request('values'),
+            'formula' => request('formula')
+        ]);
+
+        return redirect('articles/'.$article->id);
     }
 
     public function create()
     {
-        return view('articles/create', [
-            'articles' => \App\Article::all()
-        ]);
+        return view('articles/create');
     }
 }
